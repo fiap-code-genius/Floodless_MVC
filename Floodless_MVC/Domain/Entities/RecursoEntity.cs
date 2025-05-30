@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Floodless_MVC.Domain.Entities
 {
     [Table("TB_FLOODLESS_RECURSO")]
-    public class Recurso
+    public class RecursoEntity
     {
         [Key]
         [Column("id_recurso")]
@@ -30,9 +30,9 @@ namespace Floodless_MVC.Domain.Entities
         public DateTime DataCriacao { get; set; } = DateTime.Now;
 
         //Chave estrangeira
-        [ForeignKey(nameof(Recurso))]
+        [ForeignKey(nameof(RecursoEntity))]
         public int VoluntarioId { get; set; }
-        public virtual Voluntario Voluntario { get; set; }
+        public virtual VoluntarioEntity Voluntario { get; set; }
 
     }
 }

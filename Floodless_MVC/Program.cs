@@ -1,4 +1,6 @@
+using Floodless_MVC.Domain.Interfaces;
 using Floodless_MVC.Infrastructure.Data.AppData;
+using Floodless_MVC.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +8,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ApplicationContext>(options => {
     options.UseOracle(builder.Configuration.GetConnectionString("Oracle"));
 });
+
+builder.Services.AddTransient<IRecursoRepository, RecursoRepository>();
+builder.Services.AddTransient<IVoluntarioRepository, VoluntarioRepository>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

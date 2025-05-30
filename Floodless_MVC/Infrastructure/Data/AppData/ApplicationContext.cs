@@ -12,12 +12,12 @@ namespace Floodless_MVC.Infrastructure.Data.AppData
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Recurso>()
+            modelBuilder.Entity<RecursoEntity>()
                 .Property(r => r.TipoRecurso)
                 .HasConversion<string>();
         }
 
-        public DbSet<Recurso> Recurso { get; set; }
-        public DbSet<Voluntario> Voluntario { get; set; }
+        public DbSet<RecursoEntity> Recurso { get; set; }
+        public DbSet<VoluntarioEntity> Voluntario { get; set; }
     }
 }

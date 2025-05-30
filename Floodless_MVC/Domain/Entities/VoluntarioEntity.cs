@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace Floodless_MVC.Domain.Entities
 {
     [Table("TB_FLOODLESS_VOLUNTARIO")]
-    public class Voluntario
+    public class VoluntarioEntity
     {
         [Key]
         [Column(name: "id_voluntario")]
@@ -28,7 +28,7 @@ namespace Floodless_MVC.Domain.Entities
         public DateTime DataRegistro { get; set; } = DateTime.Now;
 
         //Setando o relacionamento
-        public virtual ICollection<Recurso> Recursos { get; set; } = new List<Recurso>();
+        public virtual ICollection<RecursoEntity> Recursos { get; set; } = new List<RecursoEntity>();
 
     }
 }
