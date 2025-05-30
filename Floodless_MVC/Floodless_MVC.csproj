@@ -16,8 +16,4 @@
     <PackageReference Include="Oracle.EntityFrameworkCore" Version="8.23.80" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\" />
-  </ItemGroup>
-
 </Project>
