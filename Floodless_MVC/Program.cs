@@ -1,6 +1,11 @@
+using Floodless_MVC.Infrastructure.Data.AppData;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ApplicationContext>(options => {
+    options.UseOracle(builder.Configuration.GetConnectionString("Oracle"));
+});
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
