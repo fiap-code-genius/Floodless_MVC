@@ -11,9 +11,9 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Para o Docker
+// Para o Docker(Comentar quando for utilizar local)
 var config = builder.Configuration;
-var connTemplate = config.GetConnectionString("Oracle");
+var connTemplate = config.GetConnectionString("OracleDocker");
 
 var connectionString = connTemplate
     .Replace("${DB_HOST}", Environment.GetEnvironmentVariable("DB_HOST") ?? "")
