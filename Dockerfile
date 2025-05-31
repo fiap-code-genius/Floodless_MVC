@@ -28,8 +28,8 @@ ENV DB_PASSWORD=oracle
 COPY --from=build /app/publish ./
 
 # Copia arquivos de configuração
-COPY appsettings.json ./appsettings.json
-COPY appsettings.Development.json ./appsettings.Development.json
+COPY Floodless_MVC/appsettings.json ./appsettings.json
+COPY Floodless_MVC/appsettings.Development.json ./appsettings.Development.json
 
 # Altera propriedade dos arquivos para o novo usuário
 RUN chown -R floodlessuser:floodlessuser /app
