@@ -6,10 +6,10 @@ WORKDIR /source
 COPY . .
 
 # Restaura dependências
-RUN dotnet restore "Floodless_MVC.csproj"
+RUN dotnet restore
 
 # Publica em Release
-RUN dotnet publish "Floodless_MVC.csproj" -c Release -o /app/publish
+RUN dotnet publish Floodless_MVC/Floodless_MVC.csproj -c Release -o /app/publish
 
 # Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS runtime
