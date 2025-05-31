@@ -11,23 +11,30 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Para o Docker(Comentar quando for utilizar local)
-var config = builder.Configuration;
-var connTemplate = config.GetConnectionString("OracleDocker");
+// Tente obter as variáveis do ambiente
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbUser = Environment.GetEnvironmentVariable("DB_USER");
+var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
-var connectionString = connTemplate
-    .Replace("${DB_HOST}", Environment.GetEnvironmentVariable("DB_HOST") ?? "")
-    .Replace("${DB_USER}", Environment.GetEnvironmentVariable("DB_USER") ?? "")
-    .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "");
+string connectionString;
 
+if (!string.IsNullOrEmpty(dbHost) && !string.IsNullOrEmpty(dbUser) && !string.IsNullOrEmpty(dbPassword))
+{
+    // Ambiente Docker: substituir placeholders
+    var connTemplate = config.GetConnectionString("OracleDocker");
+    connectionString = connTemplate
+        .Replace("${DB_HOST}", dbHost)
+        .Replace("${DB_USER}", dbUser)
+        .Replace("${DB_PASSWORD}", dbPassword);
+}
+else
+{
+    // Ambiente local: usa string fixa
+    connectionString = config.GetConnectionString("OracleLocal");
+}
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseOracle(connectionString));
-
-// Descomentar quando for utilizar localmente o banco
-//builder.Services.AddDbContext<ApplicationContext>(options => {
-//    options.UseOracle(builder.Configuration.GetConnectionString("Oracle"));
-//});
 
 
 
