@@ -1,33 +1,49 @@
-﻿using Floodless_MVC.Application.Services;
-using Floodless_MVC.Infrastructure.Data.AppData;
+﻿using Floodless_MVC.Application.Interfaces;
+using Floodless_MVC.Application.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Floodless_MVC.Presentation.Controllers
 {
     public class RelatorioController : Controller
     {
-        private readonly ApplicationContext _context;
-        private readonly RelatorioExcelService _service;
+        private readonly IRecursoApplication _recursoApplication;
+        private readonly RelatorioExcelService _relatorioService;
 
-        public RelatorioController(ApplicationContext context, RelatorioExcelService service)
+        public RelatorioController(IRecursoApplication recursoApplication, RelatorioExcelService relatorioService)
         {
-            _context = context;
-            _service = service;
+            _recursoApplication = recursoApplication;
+            _relatorioService = relatorioService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> BaixarRelatorioRecursos()
+        public IActionResult Index()
         {
-            var recursos = await _context.Recurso.Include(r => r.Voluntario).ToListAsync();
+            return View();
+        }
 
-            var excelBytes = await _service.GerarRelatorioExcelAsync(recursos);
+        public async Task<IActionResult> GerarExcel()
+        {
+            try
+            {
+                var recursos = _recursoApplication.ObterTodos().ToList();
+                
+                if (!recursos.Any())
+                {
+                    TempData["Warning"] = "Não há recursos cadastrados para gerar o relatório.";
+                    return RedirectToAction("Index", "Recurso");
+                }
 
-            return File(
-                    excelBytes,
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    "Relatorio_Recursos.xlsx"
-                );
+                var excelBytes = await _relatorioService.GerarRelatorioExcelAsync(recursos);
+                var contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                var fileName = $"Relatorio_Recursos_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+
+                TempData["Success"] = "Relatório gerado com sucesso!";
+                return File(excelBytes, contentType, fileName);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = $"Erro ao gerar relatório: {ex.Message}";
+                return RedirectToAction("Index", "Recurso");
+            }
         }
     }
 }

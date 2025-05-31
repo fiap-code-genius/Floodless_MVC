@@ -1,0 +1,107 @@
+@model IEnumerable<Floodless_MVC.Domain.Entities.VoluntarioEntity>
+
+@{
+    ViewData["Title"] = "Voluntários";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-4 text-primary">Voluntários</h1>
+            <p class="lead text-muted">Pessoas comprometidas em ajudar durante enchentes</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus-circle"></i> Novo Voluntário
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="bg-primary text-white">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Nome)</th>
+                            <th>@Html.DisplayNameFor(model => model.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.Contato)</th>
+                            <th>Recursos</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Nome)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Contato)</td>
+                                <td>@item.Recursos.Count</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-info btn-sm text-white" onclick="showDetails(@item.Id)">
+                                            <i class="fas fa-info-circle"></i>
+                                        </button>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm text-white">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para detalhes -->
+<div class="modal fade" id="detailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Detalhes do Voluntário</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="detailsContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .table th {
+            background-color: #0d6efd !important;
+        }
+        .btn-group .btn {
+            margin-right: 2px;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+        .display-4 {
+            font-weight: 600;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        function showDetails(id) {
+            $.get('@Url.Action("Details")?id=' + id, function(data) {
+                $('#detailsContent').html(data);
+                $('#detailsModal').modal('show');
+            });
+        }
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            $('.alert').alert('close');
+        }, 5000);
+    </script>
+} 

@@ -66,37 +66,44 @@ namespace Floodless_MVC.Infrastructure.Data.Repositories
 
         public VoluntarioEntity? ObterPorId(int id)
         {
-            var voluntario = _context.Voluntario.Find(id);
+            var voluntario = _context.Voluntario
+                .Include(v => v.Recursos)
+                .FirstOrDefault(v => v.Id == id);
 
             if (voluntario is not null)
                 return voluntario;
 
             return null;
-
         }
 
         public IEnumerable<VoluntarioEntity> ObterTodos()
         {
             var voluntarios = _context.Voluntario.Include(v => v.Recursos).ToList();
-
-            if(voluntarios.Any())
-                return voluntarios;
-
-            return null;
+            return voluntarios;
         }
 
         public VoluntarioEntity? SalvarDados(VoluntarioEntity voluntario)
         {
             try
             {
+                if (string.IsNullOrEmpty(voluntario.Nome))
+                    throw new Exception("O nome do voluntário é obrigatório");
+
+                if (string.IsNullOrEmpty(voluntario.Email))
+                    throw new Exception("O email do voluntário é obrigatório");
+
                 _context.Voluntario.Add(voluntario);
                 _context.SaveChanges();
 
                 return voluntario;
             }
-            catch(Exception)
+            catch (DbUpdateException ex)
             {
-                throw new Exception("Não foi possível cadastrar o voluntário");
+                throw new Exception($"Erro ao salvar no banco de dados: {ex.InnerException?.Message ?? ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Não foi possível cadastrar o voluntário: {ex.Message}");
             }
         }
     }

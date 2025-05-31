@@ -1,0 +1,110 @@
+@model Floodless_MVC.Application.Dtos.Recurso.RecursoDto
+
+@{
+    ViewData["Title"] = "Novo Recurso";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Novo Recurso</h3>
+                </div>
+                <div class="card-body">
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            <h5 class="alert-heading">Ocorreram erros:</h5>
+                            <div asp-validation-summary="All" class="text-danger"></div>
+                        </div>
+                    }
+
+                    <form asp-action="Create" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label asp-for="Nome" class="form-label">Nome do Recurso</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-box"></i></span>
+                                <input asp-for="Nome" class="form-control" placeholder="Digite o nome do recurso" />
+                            </div>
+                            <span asp-validation-for="Nome" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="TipoRecurso" class="form-label">Tipo do Recurso</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-tags"></i></span>
+                                <select asp-for="TipoRecurso" class="form-select" asp-items="Html.GetEnumSelectList<Floodless_MVC.Domain.Enums.TipoRecurso>()">
+                                    <option value="">Selecione o tipo...</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="TipoRecurso" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Quantidade" class="form-label">Quantidade</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                                <input asp-for="Quantidade" class="form-control" type="number" min="1" />
+                            </div>
+                            <span asp-validation-for="Quantidade" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="VoluntarioId" class="form-label">Voluntário Responsável</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                <input asp-for="VoluntarioId" class="form-control" type="number" placeholder="Digite o ID do voluntário responsável" value="@ViewBag.VoluntarioId" />
+                            </div>
+                            <span asp-validation-for="VoluntarioId" class="text-danger"></span>
+                            <small class="text-muted">Digite o ID do voluntário que será responsável por este recurso.</small>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save"></i> Cadastrar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border: none;
+            border-radius: 15px;
+        }
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+        }
+        .input-group-text {
+            background-color: #f8f9fa;
+            border-right: none;
+        }
+        .form-control, .form-select {
+            border-left: none;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #dee2e6;
+            box-shadow: none;
+        }
+        .input-group:focus-within .input-group-text {
+            border-color: #86b7fe;
+        }
+        .input-group:focus-within .form-control,
+        .input-group:focus-within .form-select {
+            border-color: #86b7fe;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 

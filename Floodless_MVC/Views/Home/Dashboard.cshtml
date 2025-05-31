@@ -1,0 +1,190 @@
+﻿@model Floodless_MVC.Models.DashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+@section Styles {
+    <link href="https://cdn.jsdelivr.net/npm/apexcharts/dist/apexcharts.css" rel="stylesheet">
+}
+
+<div class="container-fluid py-5" style="background-color: #1a1a1a;">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <h1 class="display-4 text-white mb-4">Painel de Controle - Floodless</h1>
+                <p class="text-light lead mb-4">
+                    Monitoramento em tempo real das ações de assistência às vítimas de enchentes
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-4">
+    <!-- Estatísticas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Voluntários</h5>
+                    <h2 class="card-text">@Model.TotalVoluntarios</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Recursos</h5>
+                    <h2 class="card-text">@Model.TotalRecursos</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Doações no Mês</h5>
+                    <h2 class="card-text">@Model.DoacoesMes</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Áreas Atendidas</h5>
+                    <h2 class="card-text">@Model.AreasAtendidas</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Distribuição de Recursos</h5>
+                    <div id="recursosChart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Voluntários por Região</h5>
+                    <div id="voluntariosChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Atividades Recentes e Recursos Necessários -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Atividades Recentes</h5>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Descrição</th>
+                                    <th>Responsável</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var atividade in Model.AtividadesRecentes)
+                                {
+                                    <tr>
+                                        <td>@atividade.Data.ToString("dd/MM/yyyy")</td>
+                                        <td>@atividade.Descricao</td>
+                                        <td>@atividade.Responsavel</td>
+                                        <td><span class="badge bg-@atividade.StatusClass">@atividade.Status</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Recursos Necessários</h5>
+                    <ul class="list-group">
+                        @foreach (var recurso in Model.RecursosNecessarios)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                @recurso.Nome
+                                <span class="badge bg-primary rounded-pill">@recurso.Quantidade</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script>
+        // Dados para os gráficos
+        var dadosRecursos = @Html.Raw(Json.Serialize(Model.DadosRecursos));
+        var categoriasRecursos = @Html.Raw(Json.Serialize(Model.CategoriasRecursos));
+        var dadosVoluntarios = @Html.Raw(Json.Serialize(Model.DadosVoluntarios));
+        var regioesCidade = @Html.Raw(Json.Serialize(Model.RegioesCidade));
+
+        // Gráfico de Recursos
+        var recursosOptions = {
+            series: [{
+                data: dadosRecursos
+            }],
+            chart: {
+                type: 'bar',
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: categoriasRecursos,
+            }
+        };
+
+        var recursosChart = new ApexCharts(document.querySelector("#recursosChart"), recursosOptions);
+        recursosChart.render();
+
+        // Gráfico de Voluntários
+        var voluntariosOptions = {
+            series: dadosVoluntarios,
+            chart: {
+                type: 'donut',
+                height: 350
+            },
+            labels: regioesCidade,
+            responsive: [{
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }]
+        };
+
+        var voluntariosChart = new ApexCharts(document.querySelector("#voluntariosChart"), voluntariosOptions);
+        voluntariosChart.render();
+    </script>
+}

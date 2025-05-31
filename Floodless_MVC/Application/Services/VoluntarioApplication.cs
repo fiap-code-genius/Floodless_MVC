@@ -25,6 +25,7 @@ namespace Floodless_MVC.Application.Services
             {
                 Id = id,
                 Nome = voluntario.Nome,
+                Email = voluntario.Email,
                 Contato = voluntario.Contato
             };
 
@@ -46,6 +47,7 @@ namespace Floodless_MVC.Application.Services
             var volunta = new VoluntarioEntity
             {
                 Nome = voluntario.Nome,
+                Email = voluntario.Email,
                 Contato = voluntario.Contato
             };
 

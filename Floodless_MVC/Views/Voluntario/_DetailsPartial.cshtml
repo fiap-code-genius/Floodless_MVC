@@ -1,0 +1,91 @@
+@model Floodless_MVC.Domain.Entities.VoluntarioEntity
+
+<div class="volunteer-details">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="profile-image bg-primary text-white rounded-circle d-flex align-items-center justify-content-center mb-3">
+                <i class="fas fa-user fa-3x"></i>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <h4 class="text-primary mb-3">@Model.Nome</h4>
+            <div class="info-item mb-2">
+                <i class="fas fa-envelope text-muted"></i>
+                <span class="ms-2">@Model.Email</span>
+            </div>
+            <div class="info-item mb-2">
+                <i class="fas fa-phone text-muted"></i>
+                <span class="ms-2">@Model.Contato</span>
+            </div>
+            <div class="info-item mb-2">
+                <i class="fas fa-calendar text-muted"></i>
+                <span class="ms-2">Registrado em @Model.DataRegistro.ToString("dd/MM/yyyy")</span>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="recursos-section">
+        <h5 class="text-primary mb-3">
+            <i class="fas fa-box"></i> Recursos Disponibilizados
+        </h5>
+        
+        @if (Model.Recursos.Any())
+        {
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Tipo</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var recurso in Model.Recursos)
+                        {
+                            <tr>
+                                <td>@recurso.Nome</td>
+                                <td>@recurso.TipoRecurso</td>
+                                <td>@recurso.Quantidade</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i>
+                Este voluntário ainda não cadastrou recursos.
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .volunteer-details {
+        padding: 1rem;
+    }
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+    }
+    .info-item {
+        font-size: 1.1rem;
+    }
+    .recursos-section {
+        background-color: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+    }
+    .table th {
+        font-weight: 600;
+    }
+    .alert {
+        margin-bottom: 0;
+    }
+</style> 

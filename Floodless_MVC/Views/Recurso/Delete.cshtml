@@ -1,0 +1,80 @@
+@model Floodless_MVC.Domain.Entities.RecursoEntity
+
+@{
+    ViewData["Title"] = "Excluir Recurso";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Exclusão
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h5 class="alert-heading">
+                            <i class="fas fa-exclamation-circle me-2"></i>Atenção!
+                        </h5>
+                        <p>Você tem certeza que deseja excluir este recurso? Esta ação não poderá ser desfeita.</p>
+                    </div>
+
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Detalhes do Recurso</h5>
+                            <dl class="row">
+                                <dt class="col-sm-3">Nome</dt>
+                                <dd class="col-sm-9">@Model.Nome</dd>
+
+                                <dt class="col-sm-3">Tipo</dt>
+                                <dd class="col-sm-9">@Model.TipoRecurso</dd>
+
+                                <dt class="col-sm-3">Quantidade</dt>
+                                <dd class="col-sm-9">@Model.Quantidade</dd>
+
+                                <dt class="col-sm-3">Voluntário</dt>
+                                <dd class="col-sm-9">@(Model.Voluntario?.Nome ?? "Não atribuído")</dd>
+
+                                <dt class="col-sm-3">Data de Criação</dt>
+                                <dd class="col-sm-9">@Model.DataCriacao.ToString("dd/MM/yyyy HH:mm")</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <form asp-action="Delete" class="mt-4">
+                        <input type="hidden" asp-for="Id" />
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Voltar
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Confirmar Exclusão
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .card {
+            border: none;
+            border-radius: 15px;
+        }
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+        }
+        dt {
+            font-weight: 600;
+            color: #6c757d;
+        }
+        .alert-warning {
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+} 

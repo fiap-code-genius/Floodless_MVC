@@ -1,6 +1,4 @@
-﻿
-
-using Floodless_MVC.Domain.Entities;
+﻿using Floodless_MVC.Domain.Entities;
 using Floodless_MVC.Domain.Interfaces;
 using Floodless_MVC.Infrastructure.Data.AppData;
 using Microsoft.EntityFrameworkCore;
@@ -50,16 +48,7 @@ namespace Floodless_MVC.Infrastructure.Data.Repositories
                     recurso.Nome = entity.Nome;
                     recurso.TipoRecurso = entity.TipoRecurso;
                     recurso.Quantidade = entity.Quantidade;
-
-                    if(recurso.VoluntarioId != entity.VoluntarioId)
-                    {
-                        var voluntario = _context.Voluntario.Find(recurso.VoluntarioId);
-
-                        if (voluntario == null)
-                            throw new Exception("Voluntário não encontrado.");
-
-                        recurso.VoluntarioId = voluntario.Id;
-                    }
+                    recurso.VoluntarioId = entity.VoluntarioId;
 
                     _context.Recurso.Update(recurso);
                     _context.SaveChanges();
@@ -67,8 +56,7 @@ namespace Floodless_MVC.Infrastructure.Data.Repositories
                     return recurso;
                 }
 
-                throw new Exception("Não foi possivel localizar o voluntário para seguir com a edição");
-
+                throw new Exception("Não foi possivel localizar o recurso para seguir com a edição");
             }
             catch (Exception ex)
             {
@@ -78,7 +66,9 @@ namespace Floodless_MVC.Infrastructure.Data.Repositories
 
         public RecursoEntity? ObterPorId(int id)
         {
-            var recurso = _context.Recurso.Find(id);
+            var recurso = _context.Recurso
+                            .Include(r => r.Voluntario)
+                            .FirstOrDefault(r => r.Id == id);
 
             if (recurso is not null)
                 return recurso;
@@ -88,12 +78,14 @@ namespace Floodless_MVC.Infrastructure.Data.Repositories
 
         public IEnumerable<RecursoEntity> ObterTodos()
         {
-            var recursos = _context.Recurso.Include(r => r.Voluntario.Nome).ToList();
+            var recursos = _context.Recurso
+                .Include(r => r.Voluntario)
+                .ToList();
 
             if (recursos.Any())
                 return recursos;
 
-            return null;
+            return Enumerable.Empty<RecursoEntity>();
         }
 
         public RecursoEntity? SalvarDados(RecursoEntity entity)

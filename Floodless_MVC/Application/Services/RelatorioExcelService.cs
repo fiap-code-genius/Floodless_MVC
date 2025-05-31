@@ -5,10 +5,13 @@ namespace Floodless_MVC.Application.Services
 {
     public class RelatorioExcelService
     {
-        public async Task<byte[]> GerarRelatorioExcelAsync(List<RecursoEntity> recursos)
+        public RelatorioExcelService()
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        }
 
+        public async Task<byte[]> GerarRelatorioExcelAsync(List<RecursoEntity> recursos)
+        {
             using var pacote = new ExcelPackage();
             var planilha = pacote.Workbook.Worksheets.Add("Recursos");
 

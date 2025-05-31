@@ -1,8 +1,144 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Início";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="hero-section position-relative" style="background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%); height: 100vh;">
+    <div class="container h-100">
+        <div class="row h-100 align-items-center">
+            <div class="col-lg-8 text-white">
+                <h1 class="display-3 fw-bold mb-4">Floodless</h1>
+                <p class="lead mb-4">Unindo forças para ajudar comunidades afetadas por enchentes. Nossa plataforma conecta voluntários, recursos e pessoas necessitadas em um só lugar.</p>
+                <div class="d-flex gap-3">
+                    <a href="/Voluntario/Create" class="btn btn-light btn-lg">Seja Voluntário</a>
+                    <a href="/Home/Dashboard" class="btn btn-outline-light btn-lg">Ver Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wave" style="position: absolute; bottom: 0; left: 0; width: 100%; overflow: hidden; line-height: 0;">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none" style="position: relative; display: block; width: calc(100% + 1.3px); height: 60px;">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" style="fill: #ffffff;"></path>
+        </svg>
+    </div>
 </div>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Como Podemos Ajudar</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <i class="fas fa-hands-helping fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Voluntariado</h3>
+                        <p class="text-muted">Cadastre-se como voluntário e ajude as comunidades afetadas por enchentes. Sua ajuda faz a diferença!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <i class="fas fa-box-open fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Doações</h3>
+                        <p class="text-muted">Doe recursos essenciais como alimentos, roupas e medicamentos para quem mais precisa.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center">
+                        <div class="mb-4">
+                            <i class="fas fa-chart-line fa-3x text-primary"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Monitoramento</h3>
+                        <p class="text-muted">Acompanhe em tempo real o impacto das doações e a distribuição de recursos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="mb-4">Nossa Missão</h2>
+                <p class="lead mb-4">O Floodless tem como missão facilitar a coordenação de esforços humanitários durante enchentes, conectando pessoas que querem ajudar com aquelas que precisam de assistência.</p>
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Distribuição eficiente de recursos
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Coordenação de voluntários
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Monitoramento em tempo real
+                    </li>
+                </ul>
+                <a href="/Home/SobreEnchentes" class="btn btn-primary">Saiba Mais</a>
+            </div>
+            <div class="col-lg-6">
+                <div class="p-5 text-center bg-white rounded-3 shadow-lg">
+                    <i class="fas fa-water fa-5x text-primary mb-4"></i>
+                    <h3 class="h4">Juntos Contra as Enchentes</h3>
+                    <p class="text-muted">Uma iniciativa para tornar a ajuda humanitária mais eficiente e acessível.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Impacto em Números</h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-light rounded-3">
+                    <div class="display-4 fw-bold text-primary mb-2">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="h4">Voluntários Ativos</h3>
+                    <p class="text-muted">Pessoas comprometidas em ajudar</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-light rounded-3">
+                    <div class="display-4 fw-bold text-primary mb-2">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3 class="h4">Doações Realizadas</h3>
+                    <p class="text-muted">Recursos distribuídos</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-light rounded-3">
+                    <div class="display-4 fw-bold text-primary mb-2">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <h3 class="h4">Áreas Atendidas</h3>
+                    <p class="text-muted">Regiões impactadas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);" class="text-white py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Faça Parte Dessa Mudança</h2>
+        <p class="lead mb-4">Junte-se a nós nessa missão de ajudar comunidades afetadas por enchentes</p>
+        <a href="/Voluntario/Create" class="btn btn-light btn-lg">Cadastre-se como Voluntário</a>
+    </div>
+</section>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+}

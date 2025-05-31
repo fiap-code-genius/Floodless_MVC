@@ -1,46 +1,105 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Floodless_MVC</title>
+    <title>@ViewData["Title"] - Floodless</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Floodless_MVC.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    @await RenderSectionAsync("Styles", required: false)
 </head>
-<body>
+<body class="bg-light">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Floodless_MVC</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <i class="fas fa-water me-2"></i>Floodless
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Início</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" href="/Home/SobreEnchentes"><i class="fas fa-info-circle me-1"></i>Sobre Enchentes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Recurso"><i class="fas fa-box-open me-1"></i>Recursos</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Voluntario"><i class="fas fa-hands-helping me-1"></i>Voluntários</a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - Floodless_MVC - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <main role="main">
+        @{
+            var messageTypes = new[] { "Success", "Error", "Warning" };
+            var displayedMessages = new HashSet<string>();
+        }
+        
+        @foreach (var type in messageTypes)
+        {
+            var message = TempData[type]?.ToString();
+            if (!string.IsNullOrEmpty(message) && !displayedMessages.Contains(message))
+            {
+                displayedMessages.Add(message);
+                var alertClass = type.ToLower();
+                if (type == "Error") alertClass = "danger";
+                
+                <div class="alert alert-@alertClass alert-dismissible fade show" role="alert">
+                    <i class="fas fa-@(type == "Success" ? "check-circle" : type == "Error" ? "exclamation-circle" : "exclamation-triangle") me-2"></i>@message
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+        }
+
+        @RenderBody()
+    </main>
+
+    <footer class="footer text-light bg-dark mt-5">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5><i class="fas fa-water me-2"></i>Floodless</h5>
+                    <p class="small">
+                        Ajudando comunidades afetadas por enchentes através da organização
+                        de recursos e voluntários.
+                    </p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Links Úteis</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="https://www.gov.br/defesacivil" class="text-light" target="_blank">Defesa Civil</a></li>
+                        <li><a href="https://www.cruz-vermelha.org.br/" class="text-light" target="_blank">Cruz Vermelha</a></li>
+                        <li><a href="/Home/SobreEnchentes" class="text-light">Sobre Enchentes</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contato</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-envelope me-2"></i>wesley.jane.santos@gmail.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>São Paulo, SP</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 border-light" />
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p class="mb-0">&copy; 2025 - Floodless - <a href="/Home/Privacy" class="text-light">CodeGenius</a></p>
+                </div>
+            </div>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

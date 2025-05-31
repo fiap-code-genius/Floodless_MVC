@@ -1,7 +1,13 @@
+using Floodless_MVC.Application.Interfaces;
+using Floodless_MVC.Application.Services;
 using Floodless_MVC.Domain.Interfaces;
 using Floodless_MVC.Infrastructure.Data.AppData;
 using Floodless_MVC.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+
+// Configuração da licença do EPPlus
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +17,15 @@ builder.Services.AddDbContext<ApplicationContext>(options => {
 
 builder.Services.AddTransient<IRecursoRepository, RecursoRepository>();
 builder.Services.AddTransient<IVoluntarioRepository, VoluntarioRepository>();
+builder.Services.AddTransient<IVoluntarioApplication, VoluntarioApplication>();
+builder.Services.AddTransient<IRecursoApplication, RecursoApplication>();
+builder.Services.AddScoped<RelatorioExcelService>();
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options => {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 
 var app = builder.Build();
 
