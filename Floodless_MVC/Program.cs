@@ -11,9 +11,25 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ApplicationContext>(options => {
-    options.UseOracle(builder.Configuration.GetConnectionString("Oracle"));
-});
+// Para o Docker
+var config = builder.Configuration;
+var connTemplate = config.GetConnectionString("Oracle");
+
+var connectionString = connTemplate
+    .Replace("${DB_HOST}", Environment.GetEnvironmentVariable("DB_HOST") ?? "")
+    .Replace("${DB_USER}", Environment.GetEnvironmentVariable("DB_USER") ?? "")
+    .Replace("${DB_PASSWORD}", Environment.GetEnvironmentVariable("DB_PASSWORD") ?? "");
+
+
+builder.Services.AddDbContext<ApplicationContext>(options =>
+    options.UseOracle(connectionString));
+
+// Descomentar quando for utilizar localmente o banco
+//builder.Services.AddDbContext<ApplicationContext>(options => {
+//    options.UseOracle(builder.Configuration.GetConnectionString("Oracle"));
+//});
+
+
 
 builder.Services.AddTransient<IRecursoRepository, RecursoRepository>();
 builder.Services.AddTransient<IVoluntarioRepository, VoluntarioRepository>();
