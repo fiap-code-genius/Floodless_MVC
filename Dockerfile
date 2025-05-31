@@ -21,8 +21,8 @@ RUN adduser -D floodlessuser
 # Define variáveis de ambiente
 ENV ASPNETCORE_URLS=http://+:8080
 ENV DB_HOST=oracle-db
-ENV DB_USER=system
-ENV DB_PASSWORD=oracle
+ENV DB_USER=rm558043
+ENV DB_PASSWORD=fiap24
 
 # Copia os arquivos publicados do build
 COPY --from=build /app/publish ./
