@@ -210,6 +210,18 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseOracle(connectionString));
 ```
 
+3. Descomentar essa sessão para criar automaticamente as migrations:
+
+```csharp
+// Aplicar migrations automaticamente
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+    db.Database.Migrate();
+}
+```
+
+
 ### Acessando e Configurando a VM
 
 1. Conecte-se à VM usando SSH:
