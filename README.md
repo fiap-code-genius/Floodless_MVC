@@ -476,6 +476,12 @@ ENTRYPOINT ["dotnet", "Floodless_MVC.dll"]
 ![Captura de tela 2025-05-31 224727](https://github.com/user-attachments/assets/aee67f45-492c-4bb9-a41c-8f799aaf05f9)
 
 
+### Detalhes
+
+
+![image](https://github.com/user-attachments/assets/7f6ab0f8-9e09-4c1e-bd64-fe948ac8b575)
+
+
 ### Editar
 
 ![Captura de tela 2025-05-31 224745](https://github.com/user-attachments/assets/f58303f3-f10e-44bd-b5c8-22ad0b6f32cd)
