@@ -1,6 +1,30 @@
 # Floodless MVC
 
-Uma aplicação ASP.NET Core MVC para gerenciamento de recursos e voluntários em situações de enchentes.
+Uma aplicação ASP.NET Core MVC desenvolvida para auxiliar na gestão e coordenação de recursos e voluntários durante situações de enchentes. O sistema facilita a organização de doações e a mobilização de voluntários, permitindo uma resposta mais eficiente em momentos de crise.
+
+### Sobre o Projeto
+O Floodless é uma solução criada para endereçar um dos principais desafios durante enchentes: a coordenação eficiente entre doações, recursos disponíveis e pessoas dispostas a ajudar. A aplicação serve como uma ponte entre doadores, voluntários e as necessidades das comunidades afetadas.
+
+### Objetivo
+- Centralizar informações sobre recursos disponíveis
+- Facilitar a coordenação de voluntários
+- Otimizar a distribuição de doações
+- Manter um histórico organizado de todas as ações
+- Permitir uma resposta rápida em situações de emergência
+
+### Principais Benefícios
+- **Organização**: Sistema centralizado para gestão de recursos e voluntários
+- **Eficiência**: Acompanhamento em tempo real de doações e necessidades
+- **Transparência**: Registro claro de todas as movimentações e responsáveis
+- **Agilidade**: Rápida identificação de recursos disponíveis e voluntários próximos
+- **Controle**: Gestão eficiente do estoque de doações e disponibilidade de voluntários
+
+### Impacto Social
+- **Comunidade**: Fortalecimento da rede de apoio local
+- **Emergência**: Resposta mais rápida em situações críticas
+- **Recursos**: Melhor aproveitamento das doações recebidas
+- **Voluntariado**: Incentivo à participação da comunidade
+- **Dados**: Geração de informações para melhorar a prevenção
 
 ## 📋 Pré-requisitos
 
