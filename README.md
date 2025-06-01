@@ -253,7 +253,6 @@ docker --version
 6. Clone o repositório:
 ```bash
 git clone https://github.com/fiap-code-genius/Floodless_MVC.git
-cd Floodless_MVC
 ```
 
 ## 🐳 Configuração com Docker
@@ -281,11 +280,13 @@ docker.io/gvenzl/oracle-xe:latest
 
 3. Build da Aplicação:
 ```bash
+cd Floodless_MVC
 docker build -t floodless-app .
 ```
 
 4. Execução da Aplicação:
 ```bash
+cd ..
 docker run -d --name floodless-app --network floodless-network -p 8080:8080 floodless-app
 ```
 
