@@ -11,7 +11,10 @@ ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var config = builder.Configuration;
+/*
+    //Descomentar esse trecho para usar com Docker 
+
+ var config = builder.Configuration;
 
 // Tente obter as variáveis do ambiente
 var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
@@ -37,9 +40,15 @@ else
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseOracle(connectionString));
+ */
 
+//Utilizando Local(Comentar esse trecho caso use com Docker)
+builder.Services.AddDbContext<ApplicationContext>(x =>
+{
+    x.UseOracle(builder.Configuration.GetConnectionString("OracleLocal"));
+});
 
-
+// Configurando as dependências necessárias
 builder.Services.AddTransient<IRecursoRepository, RecursoRepository>();
 builder.Services.AddTransient<IVoluntarioRepository, VoluntarioRepository>();
 builder.Services.AddTransient<IVoluntarioApplication, VoluntarioApplication>();
@@ -54,12 +63,14 @@ builder.Services.AddControllersWithViews()
 
 var app = builder.Build();
 
+
+
 // Aplicar migrations automaticamente
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-    db.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+//    db.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
