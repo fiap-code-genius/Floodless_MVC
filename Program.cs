@@ -1,24 +1,20 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
+using Floodless_MVC.Application.Interfaces;
+using Floodless_MVC.Application.Services;
+using Floodless_MVC.Domain.Interfaces;
 using Floodless_MVC.Infrastructure.Data.AppData;
+using Floodless_MVC.Infrastructure.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using OfficeOpenXml;
+
+// Configuração da licença do EPPlus
+ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Debug: Verificar o diretório atual
-Console.WriteLine($"Diretório atual: {Directory.GetCurrentDirectory()}");
+/*
+    //Descomentar esse trecho para usar com Docker 
 
-// Debug: Verificar se o arquivo existe
-Console.WriteLine($"appsettings.json existe: {File.Exists("appsettings.json")}");
-Console.WriteLine($"appsettings.json existe no diretório completo: {File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"))}");
-
-var config = builder.Configuration;
-
-// Debug: Listar todas as connection strings disponíveis
-Console.WriteLine("Connection strings disponíveis:");
-foreach (var conn in config.GetSection("ConnectionStrings").GetChildren())
-{
-    Console.WriteLine($"- {conn.Key}: {conn.Value}");
-}
+ var config = builder.Configuration;
 
 // Tente obter as variáveis do ambiente
 var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
@@ -27,17 +23,10 @@ var dbPassword = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
 string connectionString;
 
-// Debug das variáveis de ambiente
-Console.WriteLine($"DB_HOST: {dbHost}");
-Console.WriteLine($"DB_USER: {dbUser}");
-Console.WriteLine($"DB_PASSWORD: {dbPassword?.Length > 0}");
-
 if (!string.IsNullOrEmpty(dbHost) && !string.IsNullOrEmpty(dbUser) && !string.IsNullOrEmpty(dbPassword))
 {
     // Ambiente Docker: substituir placeholders
     var connTemplate = config.GetConnectionString("OracleDocker");
-    Console.WriteLine("Usando template Docker: " + connTemplate);
-    
     connectionString = connTemplate
         .Replace("${DB_HOST}", dbHost)
         .Replace("${DB_USER}", dbUser)
@@ -47,41 +36,59 @@ else
 {
     // Ambiente local: usa string fixa
     connectionString = config.GetConnectionString("OracleLocal");
-    Console.WriteLine("Usando conexão local: " + connectionString);
-}
-
-Console.WriteLine("String de conexão final: " + connectionString);
-
-// Debug: Tentar criar uma conexão de teste
-try 
-{
-    using var connection = new Oracle.ManagedDataAccess.Client.OracleConnection(connectionString);
-    connection.Open();
-    Console.WriteLine("Conexão de teste bem sucedida!");
-    connection.Close();
-}
-catch (Exception ex)
-{
-    Console.WriteLine($"Erro ao testar conexão: {ex.Message}");
-    Console.WriteLine($"Stack trace: {ex.StackTrace}");
 }
 
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseOracle(connectionString));
+ */
+
+//Utilizando Local(Comentar ou apagar esse trecho caso use com Docker)
+builder.Services.AddDbContext<ApplicationContext>(x =>
+{
+    x.UseOracle(builder.Configuration.GetConnectionString("OracleLocal"));
+});
+
+// Configurando as dependências necessárias
+builder.Services.AddTransient<IRecursoRepository, RecursoRepository>();
+builder.Services.AddTransient<IVoluntarioRepository, VoluntarioRepository>();
+builder.Services.AddTransient<IVoluntarioApplication, VoluntarioApplication>();
+builder.Services.AddTransient<IRecursoApplication, RecursoApplication>();
+builder.Services.AddScoped<RelatorioExcelService>();
+
+// Add services to the container.
+builder.Services.AddControllersWithViews()
+    .AddNewtonsoftJson(options => {
+        options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+    });
 
 var app = builder.Build();
+
+
+
+// Aplicar migrations automaticamente
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
+//    db.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run(); 
+app.Run();
