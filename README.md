@@ -2,6 +2,12 @@
 
 Uma aplicação ASP.NET Core MVC desenvolvida para auxiliar na gestão e coordenação de recursos e voluntários durante situações de enchentes. O sistema facilita a organização de doações e a mobilização de voluntários, permitindo uma resposta mais eficiente em momentos de crise.
 
+## Equipe
+
+ - Wesley Sena | RM: 558043
+ - Vanessa Yukari | RM: 558092
+ - Samara Victoria | RM: 558719
+
 ### Sobre o Projeto
 O Floodless é uma solução criada para endereçar um dos principais desafios durante enchentes: a coordenação eficiente entre doações, recursos disponíveis e pessoas dispostas a ajudar. A aplicação serve como uma ponte entre doadores, voluntários e as necessidades das comunidades afetadas.
 
